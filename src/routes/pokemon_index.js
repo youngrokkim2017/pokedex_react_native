@@ -1,8 +1,10 @@
 import React from "react";
-import { View, Text, Image } from "react-native";
+// Platform has the info about the platform you are currently on 
+import { View, Text, Image, Platform, Button, Share } from "react-native";
 // import pokemon from "../models/pokemon";
   // don't need above code because we will be getting the pokemon from the selected pokemon
 import { Link } from '../routing';
+// import { Platform } from "react-native";
 
 const Pokemon = (props) => {
   // const examplePokemon = pokemon[0];
@@ -15,7 +17,14 @@ const Pokemon = (props) => {
         <Text>Go Back</Text>
       </Link>
     </View>
-  )
+  );
+
+  const handlePress = () => {
+    Share.share({
+      message: "Check out my favorite Pokemon!",
+      url: props.selectedPokemon.photoUrl,
+    })
+  }
 
   // need a render for if there is NO pokemon selected
   if (!selectedPokemon) {
@@ -24,7 +33,7 @@ const Pokemon = (props) => {
         {backButton}
         <Text>No Pokemon Selected</Text>
       </View>
-    )
+    );
   }
   return (
     <View>
@@ -46,6 +55,14 @@ const Pokemon = (props) => {
           />
         </View>
       </View>
+      {/* if platform.os is NOT web, then show something */}
+      {
+        Platform.OS !== "web" && (
+          <View>
+            <Button title="Share" onPress={handlePress} />
+          </View>
+        )
+      }
     </View>
   );
 };
